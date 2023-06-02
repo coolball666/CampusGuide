@@ -1,0 +1,17 @@
+[
+    {
+        "location":"东吴门",
+        "pos":[0,0],
+        "edges":[
+            {
+                "to":"食堂",
+                "type":["people", "vehicle"],
+                "length":"1"
+            }
+        ],
+        "description":"苏大著名景点",
+        "level":5
+    },
+    {
+    }
+]

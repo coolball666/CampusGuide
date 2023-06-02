@@ -3,7 +3,8 @@
 //
 
 #pragma once
-
+#include "CCampusMap.h"
+#include <json/json.h>
 
 // CCampusGuideDlg 对话框
 class CCampusGuideDlg : public CDialogEx
@@ -11,7 +12,8 @@ class CCampusGuideDlg : public CDialogEx
 // 构造
 public:
 	CCampusGuideDlg(CWnd* pParent = nullptr);	// 标准构造函数
-
+	int m_w, m_h, m_x1, m_x2, m_y1, m_y2;
+	CCampusMap Campus;
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CAMPUSGUIDE_DIALOG };
@@ -48,4 +50,6 @@ public:
 	afx_msg void OnCbnSelchangeStart();
 	afx_msg void OnCbnSelchangeDestination();
 	afx_msg void OnEnChangeOutput();
+	void DrawMap(CDC* pDC);
+	CCampusMap GetMapFromJSON();
 };

@@ -53,6 +53,12 @@ END_MESSAGE_MAP()
 CCampusGuideDlg::CCampusGuideDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CAMPUSGUIDE_DIALOG, pParent)
 {
+	m_w = 1241;
+	m_h = 816;
+	m_x1 = 450;
+	m_y1 = 10;
+	m_x2 = m_w - 20;
+	m_y2 = m_h - 20;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -115,6 +121,8 @@ BOOL CCampusGuideDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	SetWindowPos(NULL, 0, 0, m_w, m_h, SWP_NOZORDER | SWP_NOMOVE);
+
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -157,6 +165,11 @@ void CCampusGuideDlg::OnPaint()
 	}
 	else
 	{
+		CPaintDC dc(this);
+		CRgn Rgn;
+		Rgn.CreateRectRgn(m_x1, m_y1, m_x2, m_y2);
+		dc.SelectClipRgn(&Rgn);
+		DrawMap(&dc);
 		CDialogEx::OnPaint();
 	}
 }
@@ -280,4 +293,13 @@ void CCampusGuideDlg::OnEnChangeOutput()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
+}
+
+void CCampusGuideDlg::DrawMap(CDC* pDC)
+{
+}
+
+CCampusMap CCampusGuideDlg::GetMapFromJSON()
+{
+	return CCampusMap();
 }
