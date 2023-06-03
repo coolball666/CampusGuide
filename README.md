@@ -19,7 +19,7 @@ This part stores the information of Transport methods and Location type of the f
             {
                 "to":"// Destination of this edge",
                 "method":["// Array, declare the transport mathod of this edge"],
-                "length":["// Array, declare the road length of each method mentioned above, must have the same length of "method" "]
+                "length":["// Array, declare the road length of each method mentioned above, must have the same length of 'method' "]
             }
         ],
         "type":["// Array, declare the scenery type of this location"],
