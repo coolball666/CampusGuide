@@ -14,17 +14,17 @@ This part stores the information of Transport methods and Location type of the f
 ``` JSON
     {
         "location":"// Location Name",
-        "pos":[// Location's X-axis, // Location's Y-axis],
+        "pos":["// Location's X-axis, // Location's Y-axis"],
         "edges":[
             {
                 "to":"// Destination of this edge",
-                "method":[// Array, declare the transport mathod of this edge],
-                "length":[// Array, declare the road length of each method mentioned above, must have the same length of "method"]
+                "method":["// Array, declare the transport mathod of this edge"],
+                "length":["// Array, declare the road length of each method mentioned above, must have the same length of "method" "]
             }
         ],
-        "type":[// Array, declare the scenery type of this location],
+        "type":["// Array, declare the scenery type of this location"],
         "description":"Location Description",
-        "level": //Integer, scenery level of this location
+        "level": "//Integer, scenery level of this location"
     },
 ```
 
