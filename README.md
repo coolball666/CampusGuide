@@ -2,7 +2,7 @@
 The CampusData.json stores all the information of the map which will be shown in the application.
 Any modifications of JSON subscripts should be applied under the following format:
 ## Header
-```
+``` JSON
     {
         "Transports":["vehicle", "people", "bicycle"],
         "LocationType":["scenery", "dormitory", "dinning", "shopping", "teaching", "administration", "complex", "others"]
@@ -11,7 +11,7 @@ Any modifications of JSON subscripts should be applied under the following forma
 This part stores the information of Transport methods and Location type of the following dataset, which means "method" and "type" field of the following dataset could only contain the strings explicitly declared by this part.
 
 ## Main Dataset
-```
+``` JSON
     {
         "location":"// Location Name",
         "pos":[// Location's X-axis, // Location's Y-axis],
