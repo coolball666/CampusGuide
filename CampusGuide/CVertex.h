@@ -3,11 +3,13 @@ class CVertex
 {
 private:
 	double pos_x, pos_y;
-	CString name;
-	double radius = 1.0;
+	int scenery_level;
+	CString name, Description;
+	int type;
 public:
-	CVertex(double x, double y, CString s);
+	CVertex();
+	CVertex(double x, double y, int l, CString s, CString Des, int t);
 	~CVertex();
-	void SetRadius(double new_r);
+	void DrawTitle(CDC* pDc, COLORREF Col, UINT FontSize);
 };
 

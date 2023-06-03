@@ -1,14 +1,19 @@
 [
     {
+        "Transports":["vehicle", "people", "bicycle"],
+        "LocationType":["scenery", "dormitory", "dinning", "shopping", "teaching", "administration", "complex", "others"]
+    },
+    {
         "location":"东吴门",
-        "pos":[0,0],
+        "pos":[0.0, 0.0],
         "edges":[
             {
                 "to":"食堂",
-                "type":["people", "vehicle"],
-                "length":"1"
+                "method":["people", "vehicle"],
+                "length":[1.0, 1.0]
             }
         ],
+        "type":["scenery"],
         "description":"苏大著名景点",
         "level":5
     },

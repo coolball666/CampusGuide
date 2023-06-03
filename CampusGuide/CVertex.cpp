@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "CVertex.h"
 
-CVertex::CVertex(double x, double y, CString s)
+CVertex::CVertex(double x, double y, int l, CString s, CString Des, int t)
 {
 	//TODO: Construction
+}
+
+CVertex::CVertex()
+{
 }
 
 CVertex::~CVertex()
@@ -11,7 +15,6 @@ CVertex::~CVertex()
 	//TODO Deconstruction
 }
 
-void CVertex::SetRadius(double new_y)
+void CVertex::DrawTitle(CDC* pDc, COLORREF Col, UINT FontSize)
 {
-	//TODO: set new radius for Paint
 }
