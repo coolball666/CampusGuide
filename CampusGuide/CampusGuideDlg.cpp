@@ -7,6 +7,8 @@
 #include "CampusGuide.h"
 #include "CampusGuideDlg.h"
 #include "afxdialogex.h"
+#include <iostream>
+#include <fstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -297,9 +299,35 @@ void CCampusGuideDlg::OnEnChangeOutput()
 
 void CCampusGuideDlg::DrawMap(CDC* pDC)
 {
+	Campus = GetMapFromJSON();
 }
 
 CCampusMap CCampusGuideDlg::GetMapFromJSON()
 {
+	rapidjson::Document document;
+	CString JsonFile = ReadFile("CampusData.json");
+	document.Parse(JsonFile);
 	return CCampusMap();
+}
+
+CString CCampusGuideDlg::ReadFile(CString FileName)
+{
+	char filename[1024];
+	sprintf_s(filename, "%S", FileName.GetBuffer());
+	FILE* fp;
+	fopen_s(&fp, filename, "rb");
+	if (!fp) {
+		printf("open failed! file: %s", filename);
+		return "";
+	}
+	char buf[1024 * 16]; //新建缓存区
+	CString result;
+	/*循环读取文件，直到文件读取完成*/
+	while (int n = fgets(buf, 1024 * 16, fp) != NULL)
+	{
+		result.Append(buf);
+		//cout << buf << endl;
+	}
+	fclose(fp);
+	return result;
 }

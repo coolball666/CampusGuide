@@ -4,7 +4,7 @@
 
 #pragma once
 #include "CCampusMap.h"
-#include <json/json.h>
+#include <rapidjson/document.h>
 
 // CCampusGuideDlg 对话框
 class CCampusGuideDlg : public CDialogEx
@@ -52,4 +52,5 @@ public:
 	afx_msg void OnEnChangeOutput();
 	void DrawMap(CDC* pDC);
 	CCampusMap GetMapFromJSON();
+	CString ReadFile(CString FileName);
 };
