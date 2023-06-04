@@ -1,11 +1,11 @@
 [
     {
         "Transports":["vehicle", "people", "bicycle"],
-        "LocationType":["scenery", "dormitory", "dinning", "shopping", "teaching", "administration", "complex", "others"]
+        "LocationType":["scenery", "dormitory", "dining", "shopping", "teaching", "administration", "complex", "others"]
     },
     {
         "location":"东吴门",
-        "pos":[0.0, 0.0],
+        "pos":[50.0, 50.0],
         "edges":[
             {
                 "to":"食堂",
@@ -18,5 +18,17 @@
         "level":5
     },
     {
+        "location":"食堂",
+        "pos":[100.0, 100.0],
+        "edges":[
+            {
+                "to":"东吴门",
+                "method":["people", "vehicle"],
+                "length":[1.0, 1.0]
+            }
+        ],
+        "type":["dining"],
+        "description":"食堂",
+        "level":1
     }
 ]

@@ -6,7 +6,7 @@
 class CEdge
 {
 private:
-	int From, To;
+	int From, To; // Store the ID of nodes
 	double length;
 	int method;
 public:
@@ -14,5 +14,8 @@ public:
 	CEdge(int f, int t, double l, int m);
 	~CEdge();
 	bool operator< (const CEdge& e) const;
+	int getFrom();
+	int getTo();
+	double getLength() const;
 };
 

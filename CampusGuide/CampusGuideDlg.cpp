@@ -33,6 +33,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnCbnSelchangeLocation();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -58,15 +60,19 @@ CCampusGuideDlg::CCampusGuideDlg(CWnd* pParent /*=nullptr*/)
 	m_w = 1241;
 	m_h = 816;
 	m_x1 = 450;
-	m_y1 = 10;
-	m_x2 = m_w - 20;
-	m_y2 = m_h - 20;
+	m_y1 = 40;
+	m_x2 = m_w - 40;
+	m_y2 = m_h - 40;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CCampusGuideDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LOCATION, m_location);
+	DDX_Control(pDX, IDC_CATEGORY, m_category);
+	DDX_Control(pDX, IDC_START, m_start);
+	DDX_Control(pDX, IDC_DESTINATION, m_destination);
 }
 
 BEGIN_MESSAGE_MAP(CCampusGuideDlg, CDialogEx)
@@ -124,8 +130,23 @@ BOOL CCampusGuideDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	SetWindowPos(NULL, 0, 0, m_w, m_h, SWP_NOZORDER | SWP_NOMOVE);
-
-
+	Campus = GetMapFromJSON();
+	for (int i = 0; i < Campus.getVertexCnt(); i++)
+	{
+		m_location.AddString(Campus.getVertex(i).getName());
+		m_start.AddString(Campus.getVertex(i).getName());
+		m_destination.AddString(Campus.getVertex(i).getName());
+	}
+	for (int i = 0; i < Campus.getTypeCnt(); i++)
+	{
+		m_category.AddString(CString(Campus.getType(i).c_str()));
+	}
+	m_location.SetCurSel(0);
+	m_start.SetCurSel(0);
+	m_destination.SetCurSel(0);
+	m_category.SetCurSel(0);
+	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(false);
+	SetDlgItemText(IDC_NAME, "Guest");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -223,6 +244,17 @@ void CCampusGuideDlg::OnEnChangePsw()
 
 void CCampusGuideDlg::OnBnClickedLogin()
 {
+	GetDlgItem(IDC_NAME)->GetWindowText(Username);
+	GetDlgItem(IDC_PSW)->GetWindowText(Password);
+	if (Username.MakeLower() == CString("admin") && Password.MakeLower() == CString("admin"))
+	{
+		AfxMessageBox("管理员登录成功");
+		GetDlgItem(IDC_CHANGEMAP)->EnableWindow(true);
+	}
+	else
+	{
+		AfxMessageBox("账号密码错误");
+	}
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -259,6 +291,11 @@ void CCampusGuideDlg::OnBnClickedNearby()
 
 void CCampusGuideDlg::OnBnClickedChangemap()
 {
+	WinExec("Notepad.exe D:\\VS\\CampusGuide\\CampusData.json", SW_SHOW);
+	OnInitDialog();
+	SetDlgItemText(IDC_NAME, Username);
+	SetDlgItemText(IDC_PSW, Password);
+	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(true);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -299,7 +336,30 @@ void CCampusGuideDlg::OnEnChangeOutput()
 
 void CCampusGuideDlg::DrawMap(CDC* pDC)
 {
-	Campus = GetMapFromJSON();
+	int s = Campus.getScale();
+	for (int i = 0; i < Campus.getVertexCnt(); i++)
+	{
+		CVertex V = Campus.getVertex(i);
+		pDC->SetTextAlign(TA_BASELINE | TA_CENTER);
+		CSize sz = pDC->GetTextExtent(V.getName());
+		pDC->Rectangle((int)(V.getX() * s + m_x1) - sz.cx / 2 - 5, (int)(V.getY() * s + m_y1) - sz.cy / 2 - 10, (int)(V.getX() * s + m_x1) + sz.cx / 2 + 5, (int)(V.getY() * s + m_y1) + sz.cy / 2);
+		pDC->TextOut((int)(V.getX() * s + m_x1), (int)(V.getY() * s + m_y1), V.getName());
+	}
+	for (int i = 0; i < Campus.getEdgeCnt(); i++)
+	{
+		CEdge E = Campus.getEdge(i);
+		CVertex V1 = Campus.getVertex(E.getFrom()), V2 = Campus.getVertex(E.getTo());
+		CSize sz1 = pDC->GetTextExtent(V1.getName()), sz2 = pDC->GetTextExtent(V2.getName());
+		int x_1 = V1.getX() * s + m_x1, y_1 = V1.getY() * s + m_y1;
+		int x_2 = V2.getX() * s + m_x1, y_2 = V2.getY() * s + m_y1;
+		if (y_1 > y_2)
+		{
+			std::swap(y_1, y_2);
+			std::swap(x_1, x_2);
+		}
+		pDC->MoveTo(x_1, y_1 + sz1.cy / 2);
+		pDC->LineTo(x_2, y_2 - sz2.cy / 2);
+	}
 }
 
 CCampusMap CCampusGuideDlg::GetMapFromJSON()
@@ -307,9 +367,10 @@ CCampusMap CCampusGuideDlg::GetMapFromJSON()
 	rapidjson::Document document;
 	char ReadBuffer[65536];
 	FILE* fp;
-	if (fopen_s(&fp, "CampusData.json", "rb") != 0)
+	if (fopen_s(&fp, "D:\\VS\\CampusGuide\\CampusData.json", "rb") != 0)
 	{
-		AfxMessageBox(L"文件打开失败");
+		// TODO: Exception Handle
+		AfxMessageBox("文件打开失败");
 		PostQuitMessage(0);
 	}
 	rapidjson::FileReadStream is(fp, ReadBuffer, sizeof(ReadBuffer));

@@ -15,6 +15,7 @@ public:
 	CCampusGuideDlg(CWnd* pParent = nullptr);	// 标准构造函数
 	int m_w, m_h, m_x1, m_x2, m_y1, m_y2;
 	CCampusMap Campus;
+	CString Username, Password;
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CAMPUSGUIDE_DIALOG };
@@ -53,4 +54,8 @@ public:
 	afx_msg void OnEnChangeOutput();
 	void DrawMap(CDC* pDC);
 	CCampusMap GetMapFromJSON();
+	CComboBox m_location;
+	CComboBox m_category;
+	CComboBox m_start;
+	CComboBox m_destination;
 };
