@@ -51,9 +51,15 @@ public:
 	CEdge& getEdge(int i);
 	int getScale();
 	int getTypeCnt();
+	int getIDFromLoc(CString Loc);
+	int getIDFromeType(std::string tp);
+	int getTransCnt();
+	std::string getTransFromID(int id);
 	std::string getType(int i);
-	std::pair<std::list<int>, double>& ShortestPath(int s, int e, int method);
-	std::vector<std::list<int>>& AllPaths(int s, int e, int method);
-	std::list<int>& BestPath(int s);
+	std::pair<std::list<int>, double> ShortestPath(int s, int e, int method);
+	std::vector<std::list<int>> AllPaths(int s, int e, int method);
+	std::list<int> BestPath(int s);
+	std::list<int> getAdjacent(int s);
+	std::list<int> getSameType(int s);
 };
 

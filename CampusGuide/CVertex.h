@@ -14,6 +14,8 @@ public:
 	double getX();
 	double getY();
 	CString getName();
+	CString getDes();
 	void changeXY(double dx, double dy);
+	bool isType(int id);
 };
 

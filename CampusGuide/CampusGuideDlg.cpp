@@ -216,6 +216,13 @@ void CCampusGuideDlg::OnClose()
 
 void CCampusGuideDlg::OnBnClickedView()
 {
+	CString Place;
+	m_location.GetLBText(m_location.GetCurSel(), Place);
+	CVertex Que = Campus.getVertex(Campus.getIDFromLoc(Place));
+	CString THO = Que.getName();
+	THO.Append(",");
+	THO.Append(Que.getDes());
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(THO);
 	//TODO: 查看所有景点
 }
 
@@ -261,30 +268,119 @@ void CCampusGuideDlg::OnBnClickedLogin()
 
 void CCampusGuideDlg::OnBnClickedShortest()
 {
+	CString BeginS, EndS;
+	m_start.GetLBText(m_start.GetCurSel(), BeginS);
+	m_destination.GetLBText(m_destination.GetCurSel(), EndS);
+	CString out = "";
+	for (int i = 0; i < Campus.getTransCnt(); i++)
+	{
+		auto ans = Campus.ShortestPath(Campus.getIDFromLoc(BeginS), Campus.getIDFromLoc(EndS), i);
+		out.Append("使用交通方式");
+		out.Append(CString(Campus.getTransFromID(i).c_str()));
+		out.Append("的最短路长度为");
+		CString ShortestLen;
+		ShortestLen.Format("%lf", ans.second);
+		out.Append(ShortestLen);
+		out.Append("，路径为");
+		for (auto ele : ans.first)
+		{
+			out.Append(Campus.getVertex(ele).getName());
+			out.Append("->");
+		}
+		out = out.Left(out.GetLength() - 2);
+		out.Append("\r\n");
+	}
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(out);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
 
 void CCampusGuideDlg::OnBnClickedAllpath()
 {
+	CString BeginS, EndS;
+	m_start.GetLBText(m_start.GetCurSel(), BeginS);
+	m_destination.GetLBText(m_destination.GetCurSel(), EndS);
+	CString out = "";
+	for (int i = 0; i < Campus.getTransCnt(); i++)
+	{
+		out.Append("使用交通方式为");
+		out.Append(CString(Campus.getTransFromID(i).c_str()));
+		out.Append("，所有路径为");
+		auto ans = Campus.AllPaths(Campus.getIDFromLoc(BeginS), Campus.getIDFromLoc(EndS), i);
+		int solCnt = 1;
+		for (auto path : ans)
+		{
+			CString Num;
+			Num.Format("%d", solCnt);
+			solCnt++;
+			out.Append(Num);
+			out.Append(":");
+			for (auto node : path)
+			{
+				out.Append(Campus.getVertex(node).getName());
+				out.Append("->");
+			}
+			out = out.Left(out.GetLength() - 2);
+			out.Append("\r\n");
+		}
+	}
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(out);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
 
 void CCampusGuideDlg::OnBnClickedHamilton()
 {
+	CString BeginS, EndS;
+	m_start.GetLBText(m_start.GetCurSel(), BeginS);
+	m_destination.GetLBText(m_destination.GetCurSel(), EndS);
+	CString out = "";
+	auto sol = Campus.BestPath(Campus.getIDFromLoc(BeginS));
+	out.Format("从起点“");
+	out.Append(BeginS);
+	out.Append("”开始的最佳路径为");
+	for (auto ele : sol)
+	{
+		out.Append(Campus.getVertex(ele).getName());
+		out.Append("->");
+	}
+	out = out.Left(out.GetLength() - 2);
+	out.Append("\r\n");
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(out);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
 
 void CCampusGuideDlg::OnBnClickedSamecategory()
 {
+	CString Cate;
+	m_category.GetLBText(m_category.GetCurSel(), Cate);
+	std::string cate_s = Cate.GetBuffer();
+	std::list<int> coll = Campus.getSameType(Campus.getIDFromeType(cate_s));
+	CString out = "相同类型地区有";
+	for (auto V : coll)
+	{
+		out.Append(Campus.getVertex(V).getName());
+		out.Append("、");
+	}
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(out.Left(out.GetLength() - 1));
 	// TODO: 在此添加控件通知处理程序代码
 }
 
 
 void CCampusGuideDlg::OnBnClickedNearby()
 {
+	CString Place;
+	m_location.GetLBText(m_location.GetCurSel(), Place);
+	int id = Campus.getIDFromLoc(Place);
+	std::list<int> adj = Campus.getAdjacent(id);
+	CString out = "周边地区有";
+	for (auto V : adj)
+	{
+		out.Append(Campus.getVertex(V).getName());
+		out.Append("、");
+	}
+	GetDlgItem(IDC_OUTPUT)->SetWindowText(out.Left(out.GetLength() - 1));
 	// TODO: 在此添加控件通知处理程序代码
 }
 

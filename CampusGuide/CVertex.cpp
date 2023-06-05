@@ -51,3 +51,13 @@ void CVertex::changeXY(double dx, double dy)
 	pos_x += dx;
 	pos_y += dy;
 }
+
+CString CVertex::getDes()
+{
+	return Description;
+}
+
+bool CVertex::isType(int id)
+{
+	return type.find(id) != type.end();
+}

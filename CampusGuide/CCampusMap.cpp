@@ -133,12 +133,32 @@ int CCampusMap::getTypeCnt()
 	return TypeCnt;
 }
 
+int CCampusMap::getIDFromLoc(CString Loc)
+{
+	return Location2Num[Loc];
+}
+
+int CCampusMap::getIDFromeType(std::string tp)
+{
+	return Type2Num[tp];
+}
+
+int CCampusMap::getTransCnt()
+{
+	return TransCnt;
+}
+
+std::string CCampusMap::getTransFromID(int id)
+{
+	return Num2Trans[id];
+}
+
 std::string CCampusMap::getType(int i)
 {
 	return Num2Type[i];
 }
 
-std::pair<std::list<int>, double>& CCampusMap::ShortestPath(int s, int e, int method)
+std::pair<std::list<int>, double> CCampusMap::ShortestPath(int s, int e, int method)
 {
 	double dis[MAXV];
 	bool vis[MAXV];
@@ -176,7 +196,7 @@ std::pair<std::list<int>, double>& CCampusMap::ShortestPath(int s, int e, int me
 	return std::make_pair(path, ans);
 }
 
-std::vector<std::list<int>>& CCampusMap::AllPaths(int s, int e, int method)
+std::vector<std::list<int>> CCampusMap::AllPaths(int s, int e, int method)
 {
 	std::vector<std::list<int>> sol;
 	bool vis[MAXV];
@@ -208,7 +228,69 @@ void CCampusMap::dfs(int now, int end, bool* vis, std::list<int>& p, std::vector
 	p.pop_back();
 }
 
-std::list<int>& CCampusMap::BestPath(int s)
+std::list<int> CCampusMap::BestPath(int s)
 {
-	return std::list<int>();
+	std::list<int> sol;
+	bool vis[MAXV];
+	memset(vis, 0, sizeof(vis));
+	int visCnt = 1;
+	sol.emplace_back(s);
+	while (visCnt < NodeCnt)
+	{
+		bool isUpdate = false;
+		for (auto e : Graph[s])
+		{
+			if (!vis[e.to])
+			{
+				s = e.to;
+				vis[e.to] = true;
+				sol.emplace_back(s);
+				visCnt++;
+				isUpdate = true;
+				break;
+			}
+		}
+		if (!isUpdate)
+		{
+			auto it = sol.rbegin();
+			s = *(it--);
+		}
+		bool isAllVis = true;
+		for (int i = 0; i < NodeCnt; i++)
+		{
+			if (!vis[i]) isAllVis = false;
+		}
+		if (isAllVis)
+		{
+			sol = std::list<int>();
+			break;
+		}
+	}
+	return sol;
+}
+
+std::list<int> CCampusMap::getAdjacent(int s)
+{
+	// TODO: 在此处插入 return 语句
+	std::list<int> adj;
+	int pre = Graph[s].begin()->to;
+	adj.emplace_back(pre);
+	for (auto e : Graph[s])
+		if (e.to != pre)
+		{
+			adj.emplace_back(e.to);
+			pre = e.to;
+		}
+	return adj;
+}
+
+std::list<int> CCampusMap::getSameType(int s)
+{
+	std::list<int> collection;
+	for (int i = 0; i < NodeCnt; i++)
+	{
+		if (Node[i].isType(s))
+			collection.emplace_back(i);
+	}
+	return collection;
 }
