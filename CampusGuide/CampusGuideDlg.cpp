@@ -387,7 +387,15 @@ void CCampusGuideDlg::OnBnClickedNearby()
 
 void CCampusGuideDlg::OnBnClickedChangemap()
 {
-	WinExec("Notepad.exe D:\\VS\\CampusGuide\\CampusData.json", SW_SHOW);
+	CString Path = "Notepad.exe ";
+	CString path;
+	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
+	path.ReleaseBuffer();
+	int pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	path.Append("\\CampusData.json");
+	Path.Append(path);
+	WinExec(Path, SW_SHOW);
 	OnInitDialog();
 	SetDlgItemText(IDC_NAME, Username);
 	SetDlgItemText(IDC_PSW, Password);
@@ -463,7 +471,13 @@ CCampusMap CCampusGuideDlg::GetMapFromJSON()
 	rapidjson::Document document;
 	char ReadBuffer[65536];
 	FILE* fp;
-	if (fopen_s(&fp, "D:\\VS\\CampusGuide\\CampusData.json", "rb") != 0)
+	CString path;
+	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
+	path.ReleaseBuffer();
+	int pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	path.Append("\\CampusData.json");
+	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
 	{
 		// TODO: Exception Handle
 		AfxMessageBox("文件打开失败");
