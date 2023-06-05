@@ -393,6 +393,10 @@ void CCampusGuideDlg::OnBnClickedChangemap()
 	path.ReleaseBuffer();
 	int pos = path.ReverseFind('\\');
 	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
 	path.Append("\\CampusData.json");
 	Path.Append(path);
 	WinExec(Path, SW_SHOW);
@@ -475,6 +479,10 @@ CCampusMap CCampusGuideDlg::GetMapFromJSON()
 	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
 	path.ReleaseBuffer();
 	int pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
 	path = path.Left(pos);
 	path.Append("\\CampusData.json");
 	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
