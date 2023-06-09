@@ -251,6 +251,38 @@ void CCampusGuideDlg::OnEnChangePsw()
 }
 
 
+CCampusMap CCampusGuideDlg::GetMapFromJSON()
+{
+	rapidjson::Document document;
+	char ReadBuffer[65536];
+	FILE* fp;
+	CString path;
+	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
+	path.ReleaseBuffer();
+	int pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	CString path_other = path;
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	path.Append("\\CampusMap.json");
+	path_other.Append("\\CampusMap.json");
+	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
+	{
+		// TODO: Exception Handle
+		if (fopen_s(&fp, path_other.GetBuffer(), "rb") != 0)
+		{
+			AfxMessageBox("文件打开失败");
+			PostQuitMessage(0);
+		}
+	}
+	rapidjson::FileReadStream is(fp, ReadBuffer, sizeof(ReadBuffer));
+	fclose(fp);
+	document.ParseStream(is);
+	return CCampusMap(document);
+}
+
 void CCampusGuideDlg::OnBnClickedLogin()
 {
 	GetDlgItem(IDC_NAME)->GetWindowText(Username);
@@ -264,6 +296,25 @@ void CCampusGuideDlg::OnBnClickedLogin()
 	{
 		AfxMessageBox("账号密码错误");
 	}
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CCampusGuideDlg::OnBnClickedChangemap()
+{
+	CString Path = "Notepad.exe ";
+	CString path;
+	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
+	path.ReleaseBuffer();
+	int pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	pos = path.ReverseFind('\\');
+	path = path.Left(pos);
+	path.Append("\\CampusMap.json");
+	Path.Append(path);
+	WinExec(Path, SW_SHOW);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -404,25 +455,6 @@ void CCampusGuideDlg::OnBnClickedNearby()
 }
 
 
-void CCampusGuideDlg::OnBnClickedChangemap()
-{
-	CString Path = "Notepad.exe ";
-	CString path;
-	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
-	path.ReleaseBuffer();
-	int pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	path.Append("\\CampusData.json");
-	Path.Append(path);
-	WinExec(Path, SW_SHOW);
-	// TODO: 在此添加控件通知处理程序代码
-}
-
-
 void CCampusGuideDlg::OnCbnSelchangeLocation()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -483,38 +515,6 @@ void CCampusGuideDlg::DrawMap(CDC* pDC)
 		pDC->MoveTo(x_1, y_1 + sz1.cy / 2);
 		pDC->LineTo(x_2, y_2 - sz2.cy / 2);
 	}
-}
-
-CCampusMap CCampusGuideDlg::GetMapFromJSON()
-{
-	rapidjson::Document document;
-	char ReadBuffer[65536];
-	FILE* fp;
-	CString path;
-	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
-	path.ReleaseBuffer();
-	int pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	CString path_other = path;
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	path.Append("\\CampusData.json");
-	path_other.Append("\\CampusData.json");
-	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
-	{
-		// TODO: Exception Handle
-		if (fopen_s(&fp, path_other.GetBuffer(), "rb") != 0)
-		{
-			AfxMessageBox("文件打开失败");
-			PostQuitMessage(0);
-		}
-	}
-	rapidjson::FileReadStream is(fp, ReadBuffer, sizeof(ReadBuffer));
-	fclose(fp);
-	document.ParseStream(is);
-	return CCampusMap(document);
 }
 
 
