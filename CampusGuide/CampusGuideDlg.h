@@ -58,4 +58,6 @@ public:
 	CComboBox m_category;
 	CComboBox m_start;
 	CComboBox m_destination;
+	afx_msg void OnBnClickedClose();
+	afx_msg void OnBnClickedReload();
 };

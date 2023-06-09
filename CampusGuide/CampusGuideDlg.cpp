@@ -94,6 +94,8 @@ BEGIN_MESSAGE_MAP(CCampusGuideDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_START, &CCampusGuideDlg::OnCbnSelchangeStart)
 	ON_CBN_SELCHANGE(IDC_DESTINATION, &CCampusGuideDlg::OnCbnSelchangeDestination)
 	ON_EN_CHANGE(IDC_OUTPUT, &CCampusGuideDlg::OnEnChangeOutput)
+	ON_BN_CLICKED(IDC_CLOSE, &CCampusGuideDlg::OnBnClickedClose)
+	ON_BN_CLICKED(IDC_RELOAD, &CCampusGuideDlg::OnBnClickedReload)
 END_MESSAGE_MAP()
 
 
@@ -278,6 +280,11 @@ void CCampusGuideDlg::OnBnClickedShortest()
 		out.Append("使用交通方式");
 		out.Append(CString(Campus.getTransFromID(i).c_str()));
 		out.Append("的最短路长度为");
+		if (fabs(ans.second - 1000000009.0) < 1e-9)
+		{
+			out.Append("Inf\r\n");
+			continue;
+		}
 		CString ShortestLen;
 		ShortestLen.Format("%lf", ans.second);
 		out.Append(ShortestLen);
@@ -351,6 +358,18 @@ void CCampusGuideDlg::OnBnClickedHamilton()
 }
 
 
+void CCampusGuideDlg::OnBnClickedReload()
+{
+	OnInitDialog();
+	Invalidate();
+	UpdateWindow();
+	SetDlgItemText(IDC_NAME, Username);
+	SetDlgItemText(IDC_PSW, Password);
+	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(true);
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
 void CCampusGuideDlg::OnBnClickedSamecategory()
 {
 	CString Cate;
@@ -400,10 +419,6 @@ void CCampusGuideDlg::OnBnClickedChangemap()
 	path.Append("\\CampusData.json");
 	Path.Append(path);
 	WinExec(Path, SW_SHOW);
-	OnInitDialog();
-	SetDlgItemText(IDC_NAME, Username);
-	SetDlgItemText(IDC_PSW, Password);
-	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(true);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -480,19 +495,34 @@ CCampusMap CCampusGuideDlg::GetMapFromJSON()
 	path.ReleaseBuffer();
 	int pos = path.ReverseFind('\\');
 	path = path.Left(pos);
+	CString path_other = path;
 	pos = path.ReverseFind('\\');
 	path = path.Left(pos);
 	pos = path.ReverseFind('\\');
 	path = path.Left(pos);
 	path.Append("\\CampusData.json");
+	path_other.Append("\\CampusData.json");
 	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
 	{
 		// TODO: Exception Handle
-		AfxMessageBox("文件打开失败");
-		PostQuitMessage(0);
+		if (fopen_s(&fp, path_other.GetBuffer(), "rb") != 0)
+		{
+			AfxMessageBox("文件打开失败");
+			PostQuitMessage(0);
+		}
 	}
 	rapidjson::FileReadStream is(fp, ReadBuffer, sizeof(ReadBuffer));
 	fclose(fp);
 	document.ParseStream(is);
 	return CCampusMap(document);
 }
+
+
+void CCampusGuideDlg::OnBnClickedClose()
+{
+	AfxGetMainWnd()->SendMessage(WM_CLOSE);
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+
