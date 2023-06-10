@@ -1,5 +1,5 @@
 # CampusGuide
-The CampusData.json stores all the information of the map which will be shown in the application.
+The CampusMap.json stores all the information of the map which will be shown in the application.
 Any modifications of JSON subscripts should be applied under the following format:
 ## Header
 ``` JSON
