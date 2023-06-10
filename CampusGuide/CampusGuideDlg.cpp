@@ -63,6 +63,7 @@ CCampusGuideDlg::CCampusGuideDlg(CWnd* pParent /*=nullptr*/)
 	m_y1 = 40;
 	m_x2 = m_w - 40;
 	m_y2 = m_h - 40;
+	Username = "Guest";
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -224,6 +225,10 @@ void CCampusGuideDlg::OnBnClickedView()
 	CString THO = Que.getName();
 	THO.Append(",");
 	THO.Append(Que.getDes());
+	THO.Append("，沿途景色等级为：");
+	CString level;
+	level.Format(Que.getLevel());
+	THO.Append(level + "\r\n");
 	GetDlgItem(IDC_OUTPUT)->SetWindowText(THO);
 	//TODO: 查看所有景点
 }
@@ -396,6 +401,12 @@ void CCampusGuideDlg::OnBnClickedHamilton()
 	auto sol = Campus.BestPath(Campus.getIDFromLoc(BeginS));
 	out.Format("从起点“");
 	out.Append(BeginS);
+	if (sol.size() < Campus.getVertexCnt())
+	{
+		out.Append("”不存在最佳路径\r\n"); 
+		GetDlgItem(IDC_OUTPUT)->SetWindowText(out);
+		return;
+	}
 	out.Append("”开始的最佳路径为");
 	for (auto ele : sol)
 	{
@@ -416,7 +427,7 @@ void CCampusGuideDlg::OnBnClickedReload()
 	UpdateWindow();
 	SetDlgItemText(IDC_NAME, Username);
 	SetDlgItemText(IDC_PSW, Password);
-	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(true);
+	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(false);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -491,26 +502,34 @@ void CCampusGuideDlg::OnEnChangeOutput()
 
 void CCampusGuideDlg::DrawMap(CDC* pDC)
 {
-	int s = Campus.getScale();
+	double s = Campus.getScale();
 	for (int i = 0; i < Campus.getVertexCnt(); i++)
 	{
 		CVertex V = Campus.getVertex(i);
 		pDC->SetTextAlign(TA_BASELINE | TA_CENTER);
 		CSize sz = pDC->GetTextExtent(V.getName());
-		pDC->Rectangle((int)(V.getX() * s + m_x1) - sz.cx / 2 - 5, (int)(V.getY() * s + m_y1) - sz.cy / 2 - 10, (int)(V.getX() * s + m_x1) + sz.cx / 2 + 5, (int)(V.getY() * s + m_y1) + sz.cy / 2);
-		pDC->TextOut((int)(V.getX() * s + m_x1), (int)(V.getY() * s + m_y1), V.getName());
+		pDC->Rectangle((int)(V.getX() * s + m_x1 + 50) - sz.cx / 2 - 5, (int)(V.getY() * s + m_y1 + 50) - sz.cy / 2 - 10, (int)(V.getX() * s + m_x1 + 50) + sz.cx / 2 + 5, (int)(V.getY() * s + m_y1 + 50) + sz.cy / 2);
+		pDC->TextOut((int)(V.getX() * s + m_x1 + 50), (int)(V.getY() * s + m_y1 + 50), V.getName());
 	}
 	for (int i = 0; i < Campus.getEdgeCnt(); i++)
 	{
 		CEdge E = Campus.getEdge(i);
 		CVertex V1 = Campus.getVertex(E.getFrom()), V2 = Campus.getVertex(E.getTo());
 		CSize sz1 = pDC->GetTextExtent(V1.getName()), sz2 = pDC->GetTextExtent(V2.getName());
-		int x_1 = V1.getX() * s + m_x1, y_1 = V1.getY() * s + m_y1;
-		int x_2 = V2.getX() * s + m_x1, y_2 = V2.getY() * s + m_y1;
+		int x_1 = V1.getX() * s + m_x1 + 50, y_1 = V1.getY() * s + m_y1 + 50;
+		int x_2 = V2.getX() * s + m_x1 + 50, y_2 = V2.getY() * s + m_y1 + 50;
 		if (y_1 > y_2)
 		{
 			std::swap(y_1, y_2);
 			std::swap(x_1, x_2);
+		}
+		else if (y_1 == y_2)
+		{
+			if (E.getFrom() > E.getTo())
+			{
+				std::swap(y_1, y_2);
+				std::swap(x_1, x_2);
+			}
 		}
 		pDC->MoveTo(x_1, y_1 + sz1.cy / 2);
 		pDC->LineTo(x_2, y_2 - sz2.cy / 2);

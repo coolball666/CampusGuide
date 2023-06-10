@@ -49,7 +49,7 @@ public:
 	CVertex& getVertex(int i);
 	int getEdgeCnt();
 	CEdge& getEdge(int i);
-	int getScale();
+	double getScale();
 	int getTypeCnt();
 	int getIDFromLoc(CString Loc);
 	int getIDFromeType(std::string tp);

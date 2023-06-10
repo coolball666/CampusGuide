@@ -28,7 +28,7 @@ CCampusMap::CCampusMap(rapidjson::Document &document)
 {
 	//TODO: Don't forget to set scale ratio of graph
 	int cntLocation = 0, cntEdge = 0;
-	double min_x = 0.0, min_y = 0.0, max_x = 300.0, max_y = 300.0;
+	double min_x = 0.0, min_y = 0.0, max_x = 800.0, max_y = 800.0;
 
 	// Handle of Header
 	TransCnt = document[0]["Transports"].Size();
@@ -123,7 +123,7 @@ CEdge& CCampusMap::getEdge(int i)
 	return Edge[i];
 }
 
-int CCampusMap::getScale()
+double CCampusMap::getScale()
 {
 	return scale;
 }
@@ -230,21 +230,31 @@ void CCampusMap::dfs(int now, int end, bool* vis, std::list<int>& p, std::vector
 
 std::list<int> CCampusMap::BestPath(int s)
 {
+	int now = s;
+	int iter = 0;
 	std::list<int> sol;
 	bool vis[MAXV];
 	memset(vis, 0, sizeof(vis));
 	int visCnt = 1;
 	sol.emplace_back(s);
+	vis[s] = true;
+	auto it = sol.rbegin();
 	while (visCnt < NodeCnt)
 	{
+		iter++;
 		bool isUpdate = false;
-		for (auto e : Graph[s])
+		for (int i = 0; i < Graph[now].size(); i++)
 		{
-			if (!vis[e.to])
+			SEdge e = Graph[now][i];
+			CString out;
+			out.Format("%d", now);
+			// AfxMessageBox(out);
+			int tmp = e.to;
+			if (!vis[tmp])
 			{
-				s = e.to;
-				vis[e.to] = true;
-				sol.emplace_back(s);
+				vis[tmp] = true;
+				sol.emplace_back(tmp);
+				it = sol.rbegin();
 				visCnt++;
 				isUpdate = true;
 				break;
@@ -252,9 +262,16 @@ std::list<int> CCampusMap::BestPath(int s)
 		}
 		if (!isUpdate)
 		{
-			auto it = sol.rbegin();
-			s = *(it--);
+			now = *(++it);
+			sol.emplace_back(now);
 		}
+		else
+		{
+			now = *it;
+		}
+		if (iter > 1e7)
+			break;
+		/*
 		bool isAllVis = true;
 		for (int i = 0; i < NodeCnt; i++)
 		{
@@ -265,6 +282,7 @@ std::list<int> CCampusMap::BestPath(int s)
 			sol = std::list<int>();
 			break;
 		}
+		*/
 	}
 	return sol;
 }

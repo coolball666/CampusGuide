@@ -61,3 +61,8 @@ bool CVertex::isType(int id)
 {
 	return type.find(id) != type.end();
 }
+
+int CVertex::getLevel()
+{
+	return scenery_level;
+}

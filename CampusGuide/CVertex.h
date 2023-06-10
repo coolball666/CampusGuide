@@ -17,5 +17,6 @@ public:
 	CString getDes();
 	void changeXY(double dx, double dy);
 	bool isType(int id);
+	int getLevel();
 };
 

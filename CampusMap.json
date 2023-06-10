@@ -1,16 +1,36 @@
 [
     {
         "Transports":["vehicle", "people", "bicycle"],
-        "LocationType":["scenery", "dormitory", "dining", "shopping", "teaching", "administration", "complex", "others"]
+        "LocationType":["scenery", "dormitory", "dining", "shopping", "teaching", "administration", "sports", "others"]
     },
     {
         "location":"东吴门",
-        "pos":[50.0, 50.0],
+        "pos":[300.0, 300.0],
         "edges":[
             {
-                "to":"食堂",
-                "method":["people", "vehicle"],
+                "to":"校门",
+                "method":["people", "bicycle"],
                 "length":[1.0, 1.0]
+            },
+            {
+                "to":"学术交流中心",
+                "method":["people", "bicycle"],
+                "length":[3.0, 3.0]
+            },
+            {
+                "to":"未来科创中心",
+                "method":["people", "bicycle"],
+                "length":[4.0, 4.0]
+            },
+            {
+                "to":"国际创新中心",
+                "method":["people", "bicycle"],
+                "length":[4.0, 4.0]
+            },
+            {
+                "to":"教学中心",
+                "method":["people", "bicycle"],
+                "length":[3.0, 3.0]
             }
         ],
         "type":["scenery"],
@@ -19,16 +39,401 @@
     },
     {
         "location":"食堂",
-        "pos":[100.0, 100.0],
+        "pos":[50.0, 450.0],
+        "edges":[
+            {
+                "to":"国际创新中心",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"教学中心",
+                "method":["people"],
+                "length":[1.0]
+            },
+            {
+                "to":"体育馆",
+                "method":["people", "vehicle"],
+                "length":[2.0, 1.0]
+            },
+            {
+                "to":"3号公寓",
+                "method":["people"],
+                "length":[2.0]
+            }
+        ],
+        "type":["dining"],
+        "description":"未来食堂，仅有两层，没什么食物",
+        "level":1
+    },
+    {
+        "location":"湿地公园",
+        "pos":[100.0, 50.0],
+        "edges":[
+            {
+                "to":"夜市",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"校门",
+                "method":["vehicle"],
+                "length":[8.0]
+            }
+        ],
+        "type":["scenery"],
+        "description":"吴江胜地生态公园，占地面积巨大，景色优美，适合聚餐游玩",
+        "level":5
+    },
+    {
+        "location":"夜市",
+        "pos":[50.0, 100.0],
+        "edges":[
+            {
+                "to":"湿地公园",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"4号公寓",
+                "method":["people"],
+                "length":[2.0]
+            }
+        ],
+        "type":["dining"],
+        "description":"红桥小夜市，编外食堂",
+        "level":4
+    },
+    {
+        "location":"4号公寓",
+        "pos":[70.0, 200.0],
+        "edges":[
+            {
+                "to":"夜市",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"5号公寓",
+                "method":["people"],
+                "length":[1.0]
+            },
+            {
+                "to":"学术交流中心",
+                "method":["people", "vehicle"],
+                "length":[2.0, 3.0]
+            },
+            {
+                "to":"未来科创中心",
+                "method":["people", "vehicle"],
+                "length":[2.0, 3.0]
+            }
+        ],
+        "type":["dormitory"],
+        "description":"闲置的学生公寓",
+        "level":2
+    },
+    {
+        "location":"5号公寓",
+        "pos":[120.0, 150.0],
+        "edges":[
+            {
+                "to":"4号公寓",
+                "method":["people"],
+                "length":[1.0]
+            }
+        ],
+        "type":["dormitory"],
+        "description":"教师公寓",
+        "level":2
+    },
+    {
+        "location":"未来科创中心",
+        "pos":[100.0, 250.0],
+        "edges":[
+            {
+                "to":"4号公寓",
+                "method":["people", "vehicle"],
+                "length":[2.0, 3.0]
+            },
+            {
+                "to":"学术交流中心",
+                "method":["people", "vehicle"],
+                "length":[2.0, 2.0]
+            },
+            {
+                "to":"东吴门",
+                "method":["people"],
+                "length":[4.0]
+            },
+            {
+                "to":"国际创新中心",
+                "method":["people", "vehicle"],
+                "length":[3.0, 3.0]
+            }
+        ],
+        "type":["teaching", "administration"],
+        "description":"有教室，有办公室，有实验室的12层高的建筑，景色不错",
+        "level":3
+    },
+    {
+        "location":"学术交流中心",
+        "pos":[200.0, 200.0],
         "edges":[
             {
                 "to":"东吴门",
                 "method":["people", "vehicle"],
-                "length":[1.0, 1.0]
+                "length":[3.0, 2.0]
+            },
+            {
+                "to":"未来科创中心",
+                "method":["people", "vehicle"],
+                "length":[2.0, 2.0]
+            },
+            {
+                "to":"4号公寓",
+                "method":["people", "vehicle"],
+                "length":[2.0, 3.0]
             }
         ],
-        "type":["dining"],
-        "description":"食堂",
+        "type":["teaching", "dormitory"],
+        "description":"有教室，有会议室，有健身房，有宿舍的6层高的建筑",
+        "level":4
+    },
+    {
+        "location":"校门",
+        "pos":[400.0, 300.0],
+        "edges":[
+            {
+                "to":"东吴门",
+                "method":["people"],
+                "length":[1.0]
+            },
+            {
+                "to":"湿地公园",
+                "method":["vehicle"],
+                "length":[8.0]
+            },
+            {
+                "to":"万象汇",
+                "method":["vehicle"],
+                "length":[12.0]
+            },
+            {
+                "to":"教学中心",
+                "method":["people", "vehicle"],
+                "length":[4.0, 4.0]
+            }
+        ],
+        "type":["scenery"],
+        "description":"未来校区正门",
+        "level":2
+    },
+    {
+        "location":"国际创新中心",
+        "pos":[100.0, 375.0],
+        "edges":[
+            {
+                "to":"东吴门",
+                "method":["people", "bicycle"],
+                "length":[4.0, 4.0]
+            },
+            {
+                "to":"未来科创中心",
+                "method":["people", "vehicle"],
+                "length":[3.0, 3.0]
+            },
+            {
+                "to":"食堂",
+                "method":["people", "bicycle"],
+                "length":[4.0, 4.0]
+            }
+        ],
+        "type":["teaching"],
+        "description":"尚未完工的12层教学楼",
         "level":1
+    },
+    {
+        "location":"教学中心",
+        "pos":[200.0, 450.0],
+        "edges":[
+            {
+                "to":"东吴门",
+                "method":["people", "bicycle"],
+                "length":[3.0, 3.0]
+            },
+            {
+                "to":"校门",
+                "method":["people", "vehicle"],
+                "length":[4.0, 4.0]
+            },
+            {
+                "to":"操场",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"体育馆",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"食堂",
+                "method":["people"],
+                "length":[1.0]
+            }
+        ],
+        "type":["teaching"],
+        "description":"最常使用的教学楼，设有大量教室、自习室、研讨室",
+        "level":3
+    },
+    {
+        "location":"体育馆",
+        "pos":[100.0, 500.0],
+        "edges":[
+            {
+                "to":"教学中心",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"操场",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"3号公寓",
+                "method":["people"],
+                "length":[1.0]
+            },
+            {
+                "to":"食堂",
+                "method":["people", "vehicle"],
+                "length":[2.0, 1.0]
+            }
+        ],
+        "type":["sports"],
+        "description":"体育馆，内设羽毛球馆，乒乓球馆，健身房，篮球馆",
+        "level":3
+    },
+    {
+        "location":"3号公寓",
+        "pos":[50.0, 550.0],
+        "edges":[
+            {
+                "to":"食堂",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"体育馆",
+                "method":["people"],
+                "length":[1.0]
+            },
+            {
+                "to":"操场",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"2号公寓",
+                "method":["people", "vehicle", "bicycle"],
+                "length":[1.0, 2.0, 2.0]
+            }
+        ],
+        "type":["dormitory"],
+        "description":"男生公寓，住着全部21级和部分22级的同学",
+        "level":1
+    },
+    {
+        "location":"2号公寓",
+        "pos":[120.0, 600.0],
+        "edges":[
+            {
+                "to":"3号公寓",
+                "method":["people", "vehicle", "bicycle"],
+                "length":[1.0, 2.0, 2.0]
+            },
+            {
+                "to":"操场",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"1号公寓",
+                "method":["people", "vehicle", "bicycle"],
+                "length":[1.0, 1.0, 1.0]
+            }
+        ],
+        "type":["dormitory", "others"],
+        "description":"女生公寓，住着所有女生，一楼有物业服务中心",
+        "level":1
+    },
+    {
+        "location":"1号公寓",
+        "pos":[220.0, 650.0],
+        "edges":[
+            {
+                "to":"2号公寓",
+                "method":["people", "vehicle", "bicycle"],
+                "length":[1.0, 1.0, 1.0]
+            },
+            {
+                "to":"操场",
+                "method":["people", "bicycle"],
+                "length":[2.0, 2.0]
+            }
+        ],
+        "type":["dormitory"],
+        "description":"男生公寓，住着部分22级同学，内有快递站",
+        "level":1
+    },
+    {
+        "location":"操场",
+        "pos":[150.0, 550.0],
+        "edges":[
+            {
+                "to":"教学中心",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"体育馆",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"3号公寓",
+                "method":["people"],
+                "length":[3.0]
+            },
+            {
+                "to":"2号公寓",
+                "method":["people"],
+                "length":[2.0]
+            },
+            {
+                "to":"1号公寓",
+                "method":["people", "bicycle"],
+                "length":[2.0, 2.0]
+            }
+        ],
+        "type":["sports"],
+        "description":"300m智能操场",
+        "level":3
+    },
+    {
+        "location":"万象汇",
+        "pos":[10.0, -50.0],
+        "edges":[
+            {
+                "to":"校门",
+                "method":["vehicle"],
+                "length":[12.0]
+            }
+        ],
+        "type":["shopping"],
+        "description":"最近的一个商城",
+        "level":3
     }
 ]
