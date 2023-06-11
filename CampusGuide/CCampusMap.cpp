@@ -266,23 +266,9 @@ std::list<int> CCampusMap::BestPath(int s)
 			sol.emplace_back(now);
 		}
 		else
-		{
 			now = *it;
-		}
 		if (iter > 1e7)
 			break;
-		/*
-		bool isAllVis = true;
-		for (int i = 0; i < NodeCnt; i++)
-		{
-			if (!vis[i]) isAllVis = false;
-		}
-		if (isAllVis)
-		{
-			sol = std::list<int>();
-			break;
-		}
-		*/
 	}
 	return sol;
 }

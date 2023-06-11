@@ -80,6 +80,11 @@ BEGIN_MESSAGE_MAP(CCampusGuideDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_CHANGEMAP, &CCampusGuideDlg::OnBnClickedChangemap)
+	ON_CBN_SELCHANGE(IDC_LOCATION, &CCampusGuideDlg::OnCbnSelchangeLocation)
+	ON_CBN_SELCHANGE(IDC_CATEGORY, &CCampusGuideDlg::OnCbnSelchangeCategory)
+	ON_CBN_SELCHANGE(IDC_START, &CCampusGuideDlg::OnCbnSelchangeStart)
+	ON_CBN_SELCHANGE(IDC_DESTINATION, &CCampusGuideDlg::OnCbnSelchangeDestination)
 	ON_BN_CLICKED(IDC_VIEW, &CCampusGuideDlg::OnBnClickedView)
 	ON_EN_CHANGE(IDC_NAME, &CCampusGuideDlg::OnEnChangeName)
 	ON_EN_CHANGE(IDC_PSW, &CCampusGuideDlg::OnEnChangePsw)
@@ -89,11 +94,6 @@ BEGIN_MESSAGE_MAP(CCampusGuideDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_HAMILTON, &CCampusGuideDlg::OnBnClickedHamilton)
 	ON_BN_CLICKED(IDC_SAMECATEGORY, &CCampusGuideDlg::OnBnClickedSamecategory)
 	ON_BN_CLICKED(IDC_NEARBY, &CCampusGuideDlg::OnBnClickedNearby)
-	ON_BN_CLICKED(IDC_CHANGEMAP, &CCampusGuideDlg::OnBnClickedChangemap)
-	ON_CBN_SELCHANGE(IDC_LOCATION, &CCampusGuideDlg::OnCbnSelchangeLocation)
-	ON_CBN_SELCHANGE(IDC_CATEGORY, &CCampusGuideDlg::OnCbnSelchangeCategory)
-	ON_CBN_SELCHANGE(IDC_START, &CCampusGuideDlg::OnCbnSelchangeStart)
-	ON_CBN_SELCHANGE(IDC_DESTINATION, &CCampusGuideDlg::OnCbnSelchangeDestination)
 	ON_EN_CHANGE(IDC_OUTPUT, &CCampusGuideDlg::OnEnChangeOutput)
 	ON_BN_CLICKED(IDC_CLOSE, &CCampusGuideDlg::OnBnClickedClose)
 	ON_BN_CLICKED(IDC_RELOAD, &CCampusGuideDlg::OnBnClickedReload)
@@ -149,6 +149,7 @@ BOOL CCampusGuideDlg::OnInitDialog()
 	m_destination.SetCurSel(0);
 	m_category.SetCurSel(0);
 	GetDlgItem(IDC_CHANGEMAP)->EnableWindow(false);
+	GetDlgItem(IDC_OUTPUT)->SetWindowText("欢迎使用本系统");
 	SetDlgItemText(IDC_NAME, "Guest");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -227,7 +228,7 @@ void CCampusGuideDlg::OnBnClickedView()
 	THO.Append(Que.getDes());
 	THO.Append("，沿途景色等级为：");
 	CString level;
-	level.Format(Que.getLevel());
+	level.Format("%d", Que.getLevel());
 	THO.Append(level + "\r\n");
 	GetDlgItem(IDC_OUTPUT)->SetWindowText(THO);
 	//TODO: 查看所有景点
@@ -386,6 +387,7 @@ void CCampusGuideDlg::OnBnClickedAllpath()
 			out = out.Left(out.GetLength() - 2);
 			out.Append("\r\n");
 		}
+		out.Append("\r\n");
 	}
 	GetDlgItem(IDC_OUTPUT)->SetWindowText(out);
 	// TODO: 在此添加控件通知处理程序代码
@@ -508,7 +510,8 @@ void CCampusGuideDlg::DrawMap(CDC* pDC)
 		CVertex V = Campus.getVertex(i);
 		pDC->SetTextAlign(TA_BASELINE | TA_CENTER);
 		CSize sz = pDC->GetTextExtent(V.getName());
-		pDC->Rectangle((int)(V.getX() * s + m_x1 + 50) - sz.cx / 2 - 5, (int)(V.getY() * s + m_y1 + 50) - sz.cy / 2 - 10, (int)(V.getX() * s + m_x1 + 50) + sz.cx / 2 + 5, (int)(V.getY() * s + m_y1 + 50) + sz.cy / 2);
+		pDC->Rectangle((int)(V.getX() * s + m_x1 + 50) - sz.cx / 2 - 5, (int)(V.getY() * s + m_y1 + 50) - sz.cy / 2 - 10, 
+			(int)(V.getX() * s + m_x1 + 50) + sz.cx / 2 + 5, (int)(V.getY() * s + m_y1 + 50) + sz.cy / 2);
 		pDC->TextOut((int)(V.getX() * s + m_x1 + 50), (int)(V.getY() * s + m_y1 + 50), V.getName());
 	}
 	for (int i = 0; i < Campus.getEdgeCnt(); i++)
@@ -542,6 +545,3 @@ void CCampusGuideDlg::OnBnClickedClose()
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 	// TODO: 在此添加控件通知处理程序代码
 }
-
-
-

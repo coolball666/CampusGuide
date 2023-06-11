@@ -37,6 +37,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnClose();
+	afx_msg void OnCbnSelchangeLocation();
+	afx_msg void OnCbnSelchangeCategory();
+	afx_msg void OnCbnSelchangeStart();
+	afx_msg void OnCbnSelchangeDestination();
 	afx_msg void OnBnClickedView();
 	afx_msg void OnEnChangeName();
 	afx_msg void OnEnChangePsw();
@@ -47,17 +51,13 @@ public:
 	afx_msg void OnBnClickedSamecategory();
 	afx_msg void OnBnClickedNearby();
 	afx_msg void OnBnClickedChangemap();
-	afx_msg void OnCbnSelchangeLocation();
-	afx_msg void OnCbnSelchangeCategory();
-	afx_msg void OnCbnSelchangeStart();
-	afx_msg void OnCbnSelchangeDestination();
 	afx_msg void OnEnChangeOutput();
+	afx_msg void OnBnClickedClose();
+	afx_msg void OnBnClickedReload();
 	void DrawMap(CDC* pDC);
 	CCampusMap GetMapFromJSON();
 	CComboBox m_location;
 	CComboBox m_category;
 	CComboBox m_start;
 	CComboBox m_destination;
-	afx_msg void OnBnClickedClose();
-	afx_msg void OnBnClickedReload();
 };
