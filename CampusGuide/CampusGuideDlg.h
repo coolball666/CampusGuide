@@ -16,6 +16,7 @@ public:
 	int m_w, m_h, m_x1, m_x2, m_y1, m_y2;
 	CCampusMap Campus;
 	CString Username, Password;
+	CString FilePath;
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CAMPUSGUIDE_DIALOG };

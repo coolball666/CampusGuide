@@ -274,9 +274,11 @@ CCampusMap CCampusGuideDlg::GetMapFromJSON()
 	path = path.Left(pos);
 	path.Append("\\CampusMap.json");
 	path_other.Append("\\CampusMap.json");
+	FilePath = path;
 	if (fopen_s(&fp, path.GetBuffer(), "rb") != 0)
 	{
 		// TODO: Exception Handle
+		FilePath = path_other;
 		if (fopen_s(&fp, path_other.GetBuffer(), "rb") != 0)
 		{
 			AfxMessageBox("文件打开失败");
@@ -308,18 +310,7 @@ void CCampusGuideDlg::OnBnClickedLogin()
 
 void CCampusGuideDlg::OnBnClickedChangemap()
 {
-	CString Path = "Notepad.exe ";
-	CString path;
-	GetModuleFileName(NULL, path.GetBufferSetLength(MAX_PATH + 1), MAX_PATH);
-	path.ReleaseBuffer();
-	int pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	pos = path.ReverseFind('\\');
-	path = path.Left(pos);
-	path.Append("\\CampusMap.json");
-	Path.Append(path);
+	CString Path = "Notepad.exe " + FilePath;
 	WinExec(Path, SW_SHOW);
 	// TODO: 在此添加控件通知处理程序代码
 }
